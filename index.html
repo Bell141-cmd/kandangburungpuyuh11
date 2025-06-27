@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monitoring Kandang Puyuh</title>
+  <script type="module">
+    // Firebase Configuration
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "PyUbRVDlXcSksOHIeMS52NfTgfCsTk524p9rIWTY",
+      authDomain: "kandangpuyuh-4a179.firebaseapp.com",
+      databaseURL: "https://kandangpuyuh-4a179-default-rtdb.firebaseio.com",
+      projectId: "kandangpuyuh-4a179",
+      storageBucket: "kandangpuyuh-4a179.appspot.com",
+      messagingSenderId: "746157140774",
+      appId: "1:746157140774:web:4029ed79878dc759d66fe7",
+      measurementId: "G-HSNXC08ZHY"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+
+    // Real-time Database References
+    const temperatureRef = ref(database, '/suhu');
+    const humidityRef = ref(database, '/kelembapan');
+    const noiseRef = ref(database, '/kebisingan'); // Replace 'noise' if your key differs
+
+    // Real-time Update Listeners
+    onValue(temperatureRef, (snapshot) => {
+      const temperature = snapshot.val();
+      document.getElementById('temperature').innerText = temperature ? temperature + " °C" : "No Data";
+    });
+
+    onValue(humidityRef, (snapshot) => {
+      const humidity = snapshot.val();
+      document.getElementById('humidity').innerText = humidity ? humidity + " %" : "No Data";
+    });
+
+    onValue(noiseRef, (snapshot) => {
+      const noise = snapshot.val();
+      document.getElementById('noise').innerText = noise ? noise + " dB" : "No Data";
+    });
+  </script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+      background-color: #61f331;
+    }
+    h1 {
+      color: #333;
+    }
+    .data-container {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+    .data-card {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      width: 150px;
+    }
+    .data-card h2 {
+      font-size: 1.5em;
+      color: #555;
+    }
+    .data-card p {
+      font-size: 1.2em;
+      margin: 10px 0 0;
+    }
+ /* Gaya untuk Bubble */
+ .spreadsheet-button {
+            position: fixed;
+            bottom: 20px; /* Jarak dari bawah */
+            right: 20px;  /* Jarak dari kanan */
+            width: 60px;
+            height: 60px;
+            background-color: #55cbf6; /* Warna hijau khas Google Sheets */
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .spreadsheet-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .spreadsheet-button img {
+            width: 35px;
+            height: 35px;
+        }
+  </style>
+</head>
+<body>
+  <h1>Monitoring Kandang Puyuh</h1>
+  <div class="data-container">
+    <div class="data-card">
+      <h2>Suhu</h2>
+      <p id="temperature">Loading...</p>
+    </div>
+    <div class="data-card">
+      <h2>Kelembapan</h2>
+      <p id="humidity">Loading...</p>
+    </div>
+    <div class="data-card">
+      <h2>Kebisingan</h2>
+      <p id="noise">Loading...</p>
+    </div>
+  </div>
+
+
+<!-- Bubble Google Spreadsheet -->
+<a 
+href="https://docs.google.com/spreadsheets/d/1-trw8o3VOu5-_AFPFK0LuYgZGQLZXJsESHqipAV3e2M/edit?usp=sharing" 
+class="spreadsheet-button" 
+target="_blank" 
+aria-label="Open Google Spreadsheet"
+>
+<img src="https://img.icons8.com/color/48/000000/google-sheets.png" alt="Google Sheets Icon">
+</a>
+</body>
+</html>
